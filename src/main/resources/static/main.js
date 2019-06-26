@@ -41,7 +41,7 @@ module.exports = "<!--The content below is only a placeholder and can be replace
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Program List</h2>\n\n<div *ngFor=\"let program of programs\">\n  {{program.name}}\n</div>\n"
+module.exports = "<h2>Program List</h2>\n\n<table>\n  <tr>\n    <th>ID</th>\n    <th>Program</th>\n    <th>City</th>\n    <th>Country</th>\n    <th>Continent</th>\n    <th>Start Date</th>\n    <th>End Date</th>\n    <th>Status</th>\n    <th>URL</th>\n    <th>Latitude</th>\n    <th>Longitude</th>\n  </tr>\n  <tr *ngFor=\"let program of programs\">\n    <th>{{program.id}}</th>\n    <th>{{program.name}}</th>\n    <th>{{program.city}}</th>\n    <th>{{program.country}}</th>\n    <th>{{program.continent}}</th>\n    <th>{{program.startDate}}</th>\n    <th>{{program.endDate}}</th>\n    <th>{{program.status}}</th>\n    <th>{{program.url}}</th>\n    <th>{{program.latitude}}</th>\n    <th>{{program.longitude}}</th>\n  </tr>\n</table>\n"
 
 /***/ }),
 
@@ -170,7 +170,7 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3Byb2dyYW0tbGlzdC9wcm9ncmFtLWxpc3QuY29tcG9uZW50LmNzcyJ9 */"
+module.exports = "table {\r\n  font-family: arial, sans-serif;\r\n  border-collapse: collapse;\r\n  width: 100%;\r\n}\r\n\r\ntd, th {\r\n  border: 1px solid #dddddd;\r\n  text-align: left;\r\n  padding: 8px;\r\n}\r\n\r\ntr:nth-child(even) {\r\n  background-color: #dddddd;\r\n}\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcHJvZ3JhbS1saXN0L3Byb2dyYW0tbGlzdC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsOEJBQThCO0VBQzlCLHlCQUF5QjtFQUN6QixXQUFXO0FBQ2I7O0FBRUE7RUFDRSx5QkFBeUI7RUFDekIsZ0JBQWdCO0VBQ2hCLFlBQVk7QUFDZDs7QUFFQTtFQUNFLHlCQUF5QjtBQUMzQiIsImZpbGUiOiJzcmMvYXBwL3Byb2dyYW0tbGlzdC9wcm9ncmFtLWxpc3QuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbInRhYmxlIHtcclxuICBmb250LWZhbWlseTogYXJpYWwsIHNhbnMtc2VyaWY7XHJcbiAgYm9yZGVyLWNvbGxhcHNlOiBjb2xsYXBzZTtcclxuICB3aWR0aDogMTAwJTtcclxufVxyXG5cclxudGQsIHRoIHtcclxuICBib3JkZXI6IDFweCBzb2xpZCAjZGRkZGRkO1xyXG4gIHRleHQtYWxpZ246IGxlZnQ7XHJcbiAgcGFkZGluZzogOHB4O1xyXG59XHJcblxyXG50cjpudGgtY2hpbGQoZXZlbikge1xyXG4gIGJhY2tncm91bmQtY29sb3I6ICNkZGRkZGQ7XHJcbn1cclxuIl19 */"
 
 /***/ }),
 

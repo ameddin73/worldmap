@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ProgramService} from "../shared/program/program.service";
+import {Program} from "../models/program.model";
 
 @Component({
   selector: 'app-program-list',
@@ -7,7 +8,7 @@ import {ProgramService} from "../shared/program/program.service";
   styleUrls: ['./program-list.component.css']
 })
 export class ProgramListComponent implements OnInit {
-  programs: Array<any>;
+  programs: Array<Program>;
 
   constructor(private programService: ProgramService) { }
 
