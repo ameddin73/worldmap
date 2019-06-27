@@ -75,43 +75,55 @@ public class GoogleSheetsService {
     }
 
     private void saveProgram(List<Object> objects) {
-        String city = objects.get(0).toString();
-        String country = objects.get(1).toString();
-        String continent = objects.get(2).toString();
-        String name = objects.get(3).toString();
-        Integer status = Integer.valueOf(objects.get(4).toString());
+        String city = null;
+        String country = null;
+        String continent = null;
+        String name = null;
+        Integer status = null;
         Date startDate = null;
         Date endDate = null;
-        try {
-            String sDate = objects.get(5).toString();
-            String eDate = objects.get(6).toString();
-            if (sDate.length() == 4) {
-                startDate = new SimpleDateFormat("yyyy").parse(sDate);
-            } else {
-                startDate = new SimpleDateFormat("yyyy-MM-dd").parse(sDate);
-            }
-            if (eDate.length() == 4) {
-                endDate = new SimpleDateFormat("yyyy").parse(eDate);
-            } else if (eDate.length() != 0){
-                endDate = new SimpleDateFormat("yyyy-MM-dd").parse(eDate);
-            }
-        } catch (ParseException e) {
-            log.error("Error parsing date: " + e.getMessage());
-            System.out.println(name + "was fucky...");
-        }
-        String url = objects.get(7).toString();
-
-        String latLong = objects.get(8).toString();
+        String url = null;
         Float longitude = null;
         Float latitude = null;
-        if (latLong.length() != 0) {
+        try {
+            city = objects.get(0).toString();
+            country = objects.get(1).toString();
+            continent = objects.get(2).toString();
+            name = objects.get(3).toString();
+            status = Integer.valueOf(objects.get(4).toString());
+            startDate = null;
+            endDate = null;
             try {
-                String[] csv = latLong.split(",");
-                longitude = Float.valueOf(csv[0]);
-                latitude = Float.valueOf(csv[1]);
-            } catch (Exception e) {
-                log.error("Error parsing latitude or longitude: " + e.getMessage());
+                String sDate = objects.get(5).toString();
+                String eDate = objects.get(6).toString();
+                if (sDate.length() == 4) {
+                    startDate = new SimpleDateFormat("yyyy").parse(sDate);
+                } else {
+                    startDate = new SimpleDateFormat("yyyy-MM-dd").parse(sDate);
+                }
+                if (eDate.length() == 4) {
+                    endDate = new SimpleDateFormat("yyyy").parse(eDate);
+                } else if (eDate.length() != 0){
+                    endDate = new SimpleDateFormat("yyyy-MM-dd").parse(eDate);
+                }
+            } catch (ParseException e) {
+                log.error("Error parsing date: " + e.getMessage());
+                System.out.println(name + "was fucky...");
             }
+            url = objects.get(7).toString();
+
+            String latLong = objects.get(8).toString();
+            if (latLong.length() != 0) {
+                try {
+                    String[] csv = latLong.split(",");
+                    longitude = Float.valueOf(csv[0]);
+                    latitude = Float.valueOf(csv[1]);
+                } catch (Exception e) {
+                    log.error("Error parsing latitude or longitude: " + e.getMessage());
+                }
+            }
+        } catch (IndexOutOfBoundsException e) {
+            log.error("Error saving program " + name + ": " + e.getClass().getCanonicalName() + ": " + e.getMessage());
         }
 
         programRepository.save(new Program(city, continent, country, endDate, latitude, longitude,
@@ -144,7 +156,7 @@ public class GoogleSheetsService {
                             saveProgram(objects);
                             retry = ERROR_TRIES;
                         } catch (Exception e) {
-                            log.error("Error saving program: " + e.getMessage());
+                            log.error("Error saving program: " + e.getClass().getCanonicalName() + " [" + e.getMessage() + "]");
                         }
                     }
                 }
