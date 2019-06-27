@@ -15,6 +15,7 @@ export class ProgramListComponent implements OnInit {
   ngOnInit() {
     this.programService.getAll().subscribe(data => {
       this.programs = data._embedded.programs;
+      this.programs.sort(((a, b) => {return (a.name>b.name?1:-1)}));
     })
   }
 

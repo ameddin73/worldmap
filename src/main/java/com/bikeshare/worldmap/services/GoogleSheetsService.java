@@ -42,6 +42,7 @@ public class GoogleSheetsService {
     private static final String TOKENS_DIRECTORY_PATH = "/tokens";
     private static final String CREDENTIALS_FILE_PATH = "/google-sheets-client-secret.json";
     private static final String RANGE = "All!A3:I10000";
+    private static final int ERROR_TRIES = 5;
 
     @Autowired
     public GoogleSheetsService(ProgramRepository programRepository) {
@@ -96,6 +97,7 @@ public class GoogleSheetsService {
             }
         } catch (ParseException e) {
             log.error("Error parsing date: " + e.getMessage());
+            System.out.println(name + "was fucky...");
         }
         String url = objects.get(7).toString();
 
@@ -122,10 +124,11 @@ public class GoogleSheetsService {
             @Override
             public void run() {
                 int retry = 0;
-                while (retry < 5) {
+                while (retry < ERROR_TRIES) {
                     retry++;
                     try {
                         values = getSheetAsList();
+                        retry = ERROR_TRIES;
                     } catch (IOException e) {
                         log.error("IO error reading google sheets: " + e.getMessage());
                     } catch (GeneralSecurityException e) {
@@ -133,8 +136,18 @@ public class GoogleSheetsService {
                     }
                 }
 
-                for (List<Object> objects : values)
-                    saveProgram(objects);
+                for (List<Object> objects : values) {
+                    retry = 0;
+                    while (retry < ERROR_TRIES) {
+                        retry++;
+                        try {
+                            saveProgram(objects);
+                            retry = ERROR_TRIES;
+                        } catch (Exception e) {
+                            log.error("Error saving program: " + e.getMessage());
+                        }
+                    }
+                }
             }
         };
     }

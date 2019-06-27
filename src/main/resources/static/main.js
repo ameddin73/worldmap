@@ -197,6 +197,7 @@ let ProgramListComponent = class ProgramListComponent {
     ngOnInit() {
         this.programService.getAll().subscribe(data => {
             this.programs = data._embedded.programs;
+            this.programs.sort(((a, b) => { return (a.name > b.name ? 1 : -1); }));
         });
     }
 };
