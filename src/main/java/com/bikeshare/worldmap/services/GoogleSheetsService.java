@@ -1,6 +1,7 @@
 package com.bikeshare.worldmap.services;
 
 import com.bikeshare.worldmap.model.Program;
+import com.bikeshare.worldmap.repository.ProgramRepository;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -16,6 +17,7 @@ import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -30,8 +32,8 @@ import java.util.concurrent.*;
 
 @Component
 public class GoogleSheetsService {
-
     private static final Logger log = LoggerFactory.getLogger(GoogleSheetsService.class);
+    private ProgramRepository programRepository;
 
     private static final String SPREADSHEET_ID = "1Gi_IXzesLdBNSuaWdw5UyQWl2vcPUJjHb7fKFWlq6vc";
     private static final String APPLICATION_NAME = "Bikeshare Worldmap";
@@ -40,6 +42,11 @@ public class GoogleSheetsService {
     private static final String TOKENS_DIRECTORY_PATH = "/tokens";
     private static final String CREDENTIALS_FILE_PATH = "/google-sheets-client-secret.json";
     private static final String RANGE = "All!A3:I10000";
+
+    @Autowired
+    public GoogleSheetsService(ProgramRepository programRepository) {
+        this.programRepository = programRepository;
+    }
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException, GeneralSecurityException {
         //load client secrets
@@ -66,7 +73,7 @@ public class GoogleSheetsService {
         return response.getValues();
     }
 
-    private static Program getProgram(List<Object> objects) {
+    private void saveProgram(List<Object> objects) {
         String city = objects.get(0).toString();
         String country = objects.get(1).toString();
         String continent = objects.get(2).toString();
@@ -84,48 +91,56 @@ public class GoogleSheetsService {
             }
             if (eDate.length() == 4) {
                 endDate = new SimpleDateFormat("yyyy").parse(eDate);
-            } else {
+            } else if (eDate.length() != 0){
                 endDate = new SimpleDateFormat("yyyy-MM-dd").parse(eDate);
             }
         } catch (ParseException e) {
             log.error("Error parsing date: " + e.getMessage());
         }
         String url = objects.get(7).toString();
+
         String latLong = objects.get(8).toString();
+        Float longitude = null;
+        Float latitude = null;
+        if (latLong.length() != 0) {
+            try {
+                String[] csv = latLong.split(",");
+                longitude = Float.valueOf(csv[0]);
+                latitude = Float.valueOf(csv[1]);
+            } catch (Exception e) {
+                log.error("Error parsing latitude or longitude: " + e.getMessage());
+            }
+        }
 
-        String[] csv = latLong.split(",");
-        Float longitude = Float.valueOf(csv[0]);
-        Float latitude = Float.valueOf(csv[1]);
-
-        return new Program(city, continent, country, endDate, latitude, longitude,
-                name, startDate, status, url);
+        programRepository.save(new Program(city, continent, country, endDate, latitude, longitude,
+                name, startDate, status, url));
     }
 
-    private static Runnable updateData() {
+    private Runnable updateData() {
         return new Runnable() {
             List<List<Object>> values;
-            List<Program> programs;
             @Override
             public void run() {
-                try {
-                    values = getSheetAsList();
-                } catch (IOException e) {
-                    log.error("IO error reading google sheets: " + e.getMessage());
-                } catch (GeneralSecurityException e) {
-                    log.error("Security error reading google sheets: " + e.getMessage());
+                int retry = 0;
+                while (retry < 5) {
+                    retry++;
+                    try {
+                        values = getSheetAsList();
+                    } catch (IOException e) {
+                        log.error("IO error reading google sheets: " + e.getMessage());
+                    } catch (GeneralSecurityException e) {
+                        log.error("Security error reading google sheets: " + e.getMessage());
+                    }
                 }
 
                 for (List<Object> objects : values)
-                    programs.add(getProgram(objects));
-
-                for (Program program : programs)
-                    System.out.println(program.toString());
+                    saveProgram(objects);
             }
         };
     }
 
     @PostConstruct
-    private static void runDataUpdate() {
+    private void runDataUpdate() {
         log.info("Initializing Google Sheets scheduled service.");
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         scheduler.scheduleAtFixedRate(updateData(),0,1, TimeUnit.DAYS);
