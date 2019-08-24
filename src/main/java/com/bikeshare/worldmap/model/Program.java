@@ -122,4 +122,21 @@ public class Program implements Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    @Override
+    public String toString() {
+        return "Program{" +
+                "id=" + id +
+                ", city='" + city + '\'' +
+                ", continent='" + continent + '\'' +
+                ", country='" + country + '\'' +
+                ", endDate=" + endDate +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", name='" + name + '\'' +
+                ", startDate=" + startDate +
+                ", status=" + status +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }
