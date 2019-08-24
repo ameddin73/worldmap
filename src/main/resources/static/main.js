@@ -30,7 +30,7 @@ webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    Welcome to {{ title }}!\n  </h1>\n</div>\n\n<app-program-list></app-program-list>\n<router-outlet></router-outlet>\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\r\n<div style=\"text-align:center\">\r\n  <h1>\r\n    Welcome to {{ title }}!\r\n  </h1>\r\n</div>\r\n\r\n<app-program-list></app-program-list>\r\n<router-outlet></router-outlet>\r\n"
 
 /***/ }),
 
@@ -41,7 +41,7 @@ module.exports = "<!--The content below is only a placeholder and can be replace
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Program List</h2>\n\n<table>\n  <tr>\n    <th>ID</th>\n    <th>Program</th>\n    <th>City</th>\n    <th>Country</th>\n    <th>Continent</th>\n    <th>Start Date</th>\n    <th>End Date</th>\n    <th>Status</th>\n    <th>URL</th>\n    <th>Latitude</th>\n    <th>Longitude</th>\n  </tr>\n  <tr *ngFor=\"let program of programs\">\n    <th>{{program.id}}</th>\n    <th>{{program.name}}</th>\n    <th>{{program.city}}</th>\n    <th>{{program.country}}</th>\n    <th>{{program.continent}}</th>\n    <th>{{program.startDate}}</th>\n    <th>{{program.endDate}}</th>\n    <th>{{program.status}}</th>\n    <th>{{program.url}}</th>\n    <th>{{program.latitude}}</th>\n    <th>{{program.longitude}}</th>\n  </tr>\n</table>\n"
+module.exports = "<h2>Program List</h2>\r\n\r\n<table>\r\n  <tr>\r\n    <th>ID</th>\r\n    <th>Program</th>\r\n    <th>City</th>\r\n    <th>Country</th>\r\n    <th>Continent</th>\r\n    <th>Start Date</th>\r\n    <th>End Date</th>\r\n    <th>Status</th>\r\n    <th>URL</th>\r\n    <th>Latitude</th>\r\n    <th>Longitude</th>\r\n  </tr>\r\n  <tr *ngFor=\"let program of programs\">\r\n    <th>{{program.id}}</th>\r\n    <th>{{program.name}}</th>\r\n    <th>{{program.city}}</th>\r\n    <th>{{program.country}}</th>\r\n    <th>{{program.continent}}</th>\r\n    <th>{{program.startDate}}</th>\r\n    <th>{{program.endDate}}</th>\r\n    <th>{{program.status}}</th>\r\n    <th>{{program.url}}</th>\r\n    <th>{{program.latitude}}</th>\r\n    <th>{{program.longitude}}</th>\r\n  </tr>\r\n</table>\r\n"
 
 /***/ }),
 
