@@ -2,6 +2,7 @@ package com.bikeshare.worldmap.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
@@ -9,7 +10,7 @@ import java.util.Date;
 @Entity
 public class Program implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String city;
     private String continent;
@@ -120,5 +121,22 @@ public class Program implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public String toString() {
+        return "Program{" +
+                "id=" + id +
+                ", city='" + city + '\'' +
+                ", continent='" + continent + '\'' +
+                ", country='" + country + '\'' +
+                ", endDate=" + endDate +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", name='" + name + '\'' +
+                ", startDate=" + startDate +
+                ", status=" + status +
+                ", url='" + url + '\'' +
+                '}';
     }
 }
