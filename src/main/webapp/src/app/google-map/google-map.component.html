@@ -1,0 +1,21 @@
+<div class="div-wrapper">
+  <agm-map
+    [latitude]="lat"
+    [longitude]="lng"
+    [zoom]="zoom"
+    [disableDefaultUI]="false"
+    [zoomControl]="false">
+
+    <agm-marker
+      *ngFor="let m of markers; let i = index"
+      [latitude]="m.lat"
+      [longitude]="m.lng">
+
+      <agm-info-window>
+        <strong>InfoWindow content</strong>
+      </agm-info-window>
+
+    </agm-marker>
+
+  </agm-map>
+</div>

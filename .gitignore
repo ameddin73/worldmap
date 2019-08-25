@@ -76,3 +76,9 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+/src/main/resources/static/main.js
+/src/main/resources/static/main.js.map
+src/main/resources/google-sheets-client-secret.json
+src/main/resources/templates/
+src/main/resources/tokens/
+/src/main/resources/static/

@@ -30,7 +30,18 @@ webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\r\n<div style=\"text-align:center\">\r\n  <h1>\r\n    Welcome to {{ title }}!\r\n  </h1>\r\n</div>\r\n\r\n<app-program-list></app-program-list>\r\n<router-outlet></router-outlet>\r\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\r\n<div style=\"text-align:center\">\r\n  <h1>\r\n    Welcome to {{ title }}!\r\n  </h1>\r\n</div>\r\n\r\n<!--<app-program-list></app-program-list>-->\r\n<app-google-map></app-google-map>\r\n<router-outlet></router-outlet>\r\n"
+
+/***/ }),
+
+/***/ "./node_modules/raw-loader/index.js!./src/app/google-map/google-map.component.html":
+/*!********************************************************************************!*\
+  !*** ./node_modules/raw-loader!./src/app/google-map/google-map.component.html ***!
+  \********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h1>test...</h1>\n<agm-map\n  [latitude]=\"lat\"\n  [longitude]=\"lng\"\n  [zoom]=\"zoom\"\n  [disableDefaultUI]=\"false\"\n  [zoomControl]=\"false\"\n  (mapClick)=\"mapClicked($event)\">\n\n  <agm-marker\n      *ngFor=\"let m of markers; let i = index\"\n      (markerClick)=\"clickedMarker(m.label, i)\"\n      [latitude]=\"m.lat\"\n      [longitude]=\"m.lng\"\n      [label]=\"m.label\"\n      [markerDraggable]=\"m.draggable\"\n      (dragEnd)=\"markerDragEnd(m, $event)\">\n\n    <agm-info-window>\n      <strong>InfoWindow content</strong>\n    </agm-info-window>\n\n  </agm-marker>\n\n  <agm-circle [latitude]=\"lat + 0.3\" [longitude]=\"lng\"\n      [radius]=\"5000\"\n      [fillColor]=\"'red'\"\n      [circleDraggable]=\"true\"\n      [editable]=\"true\">\n  </agm-circle>\n\n</agm-map>\n"
 
 /***/ }),
 
@@ -133,7 +144,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
-/* harmony import */ var _program_list_program_list_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./program-list/program-list.component */ "./src/app/program-list/program-list.component.ts");
+/* harmony import */ var _agm_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @agm/core */ "./node_modules/@agm/core/index.js");
+/* harmony import */ var _program_list_program_list_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./program-list/program-list.component */ "./src/app/program-list/program-list.component.ts");
+/* harmony import */ var _google_map_google_map_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./google-map/google-map.component */ "./src/app/google-map/google-map.component.ts");
+
+
 
 
 
@@ -147,17 +162,100 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
         declarations: [
             _app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"],
-            _program_list_program_list_component__WEBPACK_IMPORTED_MODULE_6__["ProgramListComponent"]
+            _program_list_program_list_component__WEBPACK_IMPORTED_MODULE_7__["ProgramListComponent"],
+            _google_map_google_map_component__WEBPACK_IMPORTED_MODULE_8__["GoogleMapComponent"]
         ],
         imports: [
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
             _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"],
-            _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClientModule"]
+            _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClientModule"],
+            _agm_core__WEBPACK_IMPORTED_MODULE_6__["AgmCoreModule"].forRoot({
+                apiKey: 'AIzaSyBNHXJAjw5MJCRikWxgYZzJmpimu9uGnJ8'
+            })
         ],
         providers: [],
         bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
     })
 ], AppModule);
+
+
+
+/***/ }),
+
+/***/ "./src/app/google-map/google-map.component.css":
+/*!*****************************************************!*\
+  !*** ./src/app/google-map/google-map.component.css ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2dvb2dsZS1tYXAvZ29vZ2xlLW1hcC5jb21wb25lbnQuY3NzIn0= */"
+
+/***/ }),
+
+/***/ "./src/app/google-map/google-map.component.ts":
+/*!****************************************************!*\
+  !*** ./src/app/google-map/google-map.component.ts ***!
+  \****************************************************/
+/*! exports provided: GoogleMapComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GoogleMapComponent", function() { return GoogleMapComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+
+
+let GoogleMapComponent = class GoogleMapComponent {
+    constructor() {
+        // google maps zoom level
+        this.zoom = 8;
+        // initial center position for the map
+        this.lat = 51.673858;
+        this.lng = 7.815982;
+        this.markers = [
+            {
+                lat: 51.673858,
+                lng: 7.815982,
+                label: 'A',
+                draggable: true
+            },
+            {
+                lat: 51.373858,
+                lng: 7.215982,
+                label: 'B',
+                draggable: false
+            },
+            {
+                lat: 51.723858,
+                lng: 7.895982,
+                label: 'C',
+                draggable: true
+            }
+        ];
+    }
+    clickedMarker(label, index) {
+        console.log(`clicked the marker: ${label || index}`);
+    }
+    mapClicked($event) {
+        this.markers.push({
+            lat: $event.coords.lat,
+            lng: $event.coords.lng,
+            draggable: true
+        });
+    }
+    markerDragEnd(m, $event) {
+        console.log('dragEnd', m, $event);
+    }
+};
+GoogleMapComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+        selector: 'app-google-map',
+        template: __webpack_require__(/*! raw-loader!./google-map.component.html */ "./node_modules/raw-loader/index.js!./src/app/google-map/google-map.component.html"),
+        styles: [__webpack_require__(/*! ./google-map.component.css */ "./src/app/google-map/google-map.component.css")]
+    })
+], GoogleMapComponent);
 
 
 

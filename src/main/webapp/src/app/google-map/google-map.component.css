@@ -1,0 +1,16 @@
+body,html {
+  margin: 0;
+  padding: 0;
+}
+
+.div-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+agm-map {
+  box-sizing: border-box;
+  height: 99vh !important;
+  border: 3px !important;
+}
