@@ -107,7 +107,7 @@ public class GoogleSheetsService {
                     endDate = new SimpleDateFormat("yyyy-MM-dd").parse(eDate);
                 }
             } catch (ParseException e) {
-                log.error("Error parsing date: " + e.getMessage());
+                log.error("Error parsing date for " + name + ": " + e.getMessage());
                 System.out.println(name + "was fucky...");
             }
             url = objects.get(7).toString();
@@ -119,7 +119,7 @@ public class GoogleSheetsService {
                     longitude = Float.valueOf(csv[0]);
                     latitude = Float.valueOf(csv[1]);
                 } catch (Exception e) {
-                    log.error("Error parsing latitude or longitude: " + e.getMessage());
+                    log.error("Error parsing latitude or longitude for " + name + ": " + e.getMessage());
                 }
             }
         } catch (IndexOutOfBoundsException e) {
@@ -141,10 +141,8 @@ public class GoogleSheetsService {
                     try {
                         values = getSheetAsList();
                         retry = ERROR_TRIES;
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         log.error("IO error reading google sheets: " + e.getMessage());
-                    } catch (GeneralSecurityException e) {
-                        log.error("Security error reading google sheets: " + e.getMessage());
                     }
                 }
 
