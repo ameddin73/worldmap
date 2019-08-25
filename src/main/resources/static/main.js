@@ -41,7 +41,7 @@ module.exports = "<!--The content below is only a placeholder and can be replace
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<agm-map\n  [latitude]=\"lat\"\n  [longitude]=\"lng\"\n  [zoom]=\"zoom\"\n  [disableDefaultUI]=\"false\"\n  [zoomControl]=\"false\"\n  (mapClick)=\"mapClicked($event)\">\n\n  <agm-marker\n      *ngFor=\"let m of markers; let i = index\"\n      (markerClick)=\"clickedMarker(m.label, i)\"\n      [latitude]=\"m.lat\"\n      [longitude]=\"m.lng\"\n      [label]=\"m.label\"\n      [markerDraggable]=\"m.draggable\"\n      (dragEnd)=\"markerDragEnd(m, $event)\">\n\n    <agm-info-window>\n      <strong>InfoWindow content</strong>\n    </agm-info-window>\n\n  </agm-marker>\n\n  <agm-circle [latitude]=\"lat + 0.3\" [longitude]=\"lng\"\n      [radius]=\"5000\"\n      [fillColor]=\"'red'\"\n      [circleDraggable]=\"true\"\n      [editable]=\"true\">\n  </agm-circle>\n\n</agm-map>\n"
+module.exports = "<h1>test...</h1>\n<agm-map\n  [latitude]=\"lat\"\n  [longitude]=\"lng\"\n  [zoom]=\"zoom\"\n  [disableDefaultUI]=\"false\"\n  [zoomControl]=\"false\"\n  (mapClick)=\"mapClicked($event)\">\n\n  <agm-marker\n      *ngFor=\"let m of markers; let i = index\"\n      (markerClick)=\"clickedMarker(m.label, i)\"\n      [latitude]=\"m.lat\"\n      [longitude]=\"m.lng\"\n      [label]=\"m.label\"\n      [markerDraggable]=\"m.draggable\"\n      (dragEnd)=\"markerDragEnd(m, $event)\">\n\n    <agm-info-window>\n      <strong>InfoWindow content</strong>\n    </agm-info-window>\n\n  </agm-marker>\n\n  <agm-circle [latitude]=\"lat + 0.3\" [longitude]=\"lng\"\n      [radius]=\"5000\"\n      [fillColor]=\"'red'\"\n      [circleDraggable]=\"true\"\n      [editable]=\"true\">\n  </agm-circle>\n\n</agm-map>\n"
 
 /***/ }),
 
@@ -170,7 +170,7 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"],
             _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClientModule"],
             _agm_core__WEBPACK_IMPORTED_MODULE_6__["AgmCoreModule"].forRoot({
-                apiKey: 'api key here'
+                apiKey: 'AIzaSyBNHXJAjw5MJCRikWxgYZzJmpimu9uGnJ8'
             })
         ],
         providers: [],
