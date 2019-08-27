@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MouseEvent} from "@agm/core";
 import {Program} from "../models/program.model";
 import {ProgramService} from "../shared/program/program.service";
@@ -10,6 +10,7 @@ import {ProgramService} from "../shared/program/program.service";
 })
 export class GoogleMapComponent implements OnInit{
   programs: Array<Program>;
+  @Input() date;
 
   // google maps zoom level
   zoom: number = 8;

@@ -285,12 +285,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _shared_program_program_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/program/program.service */ "./src/app/shared/program/program.service.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
 
 
 
-let ProgramListComponent = class ProgramListComponent {
-    constructor(programService) {
+
+let MapUiComponent = class MapUiComponent {
+    constructor(programService, formBuilder) {
         this.programService = programService;
+        this.formBuilder = formBuilder;
+        this.form = this.formBuilder.group({ 'single': [10] });
     }
     ngOnInit() {
         this.programService.getAll().subscribe(data => {
@@ -305,8 +309,9 @@ ProgramListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         template: __webpack_require__(/*! raw-loader!./program-list.component.html */ "./node_modules/raw-loader/index.js!./src/app/program-list/program-list.component.html"),
         styles: [__webpack_require__(/*! ./program-list.component.css */ "./src/app/program-list/program-list.component.css")]
     }),
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_shared_program_program_service__WEBPACK_IMPORTED_MODULE_2__["ProgramService"]])
-], ProgramListComponent);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_shared_program_program_service__WEBPACK_IMPORTED_MODULE_2__["ProgramService"],
+        _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormBuilder"]])
+], MapUiComponent);
 
 
 
