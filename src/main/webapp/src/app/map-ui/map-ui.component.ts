@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Directive, OnInit, ViewChild} from '@angular/core';
 import {Program} from "../models/program.model";
 import {ProgramService} from "../shared/program/program.service";
 import {FormBuilder} from "@angular/forms";
-import {NouisliderModule} from "ng2-nouislider";
 
 @Component({
   selector: 'app-map-ui',
@@ -12,13 +11,10 @@ import {NouisliderModule} from "ng2-nouislider";
 export class MapUiComponent implements OnInit {
   programs: Array<Program>;
 
-  date: {
-    oldest: Date,
-    newest: Date,
-    date: Date,
-    startDate: Date,
-    endDate: Date
-  };
+  localDateObject: LocalDateObject;
+  rangeSliderValues = {range_start: null, range_end: null};
+  maxValue = (new Date()).getFullYear().valueOf();
+  minValue = 1900;
 
   form = this.formBuilder.group({ 'single': [ 10 ] });
 
@@ -26,15 +22,27 @@ export class MapUiComponent implements OnInit {
               private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.programService.getAll().subscribe(data => {
+    this.programService.getAll().subscribe((data) => {
       this.programs = data._embedded.programs;
       this.programs.sort(((a, b) => {return (a.startDate<b.startDate?1:-1)}));
-      this.date.oldest = this.programs[0].startDate;
-      this.date.newest = this.programs[this.programs.length].startDate;
-      this.date.startDate = this.date.oldest;
-      this.date.endDate = this.date.newest;
+      var oldest = this.programs[0].startDate;
+      var newest = this.programs[this.programs.length - 1].startDate;
+      this.localDateObject = {
+        oldest: oldest,
+        newest: newest,
+        date: new Date(),
+        startDate: oldest,
+        endDate: newest
+      };
     });
-    this.date.date = new Date();
   }
 
 }
+
+export interface LocalDateObject {
+  oldest: Date,
+  newest: Date,
+  date: Date,
+  startDate: Date,
+  endDate: Date
+};
