@@ -168,6 +168,6 @@ public class GoogleSheetsService {
     private void runDataUpdate() {
         log.info("Initializing Google Sheets scheduled service.");
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(updateData(),0,1, TimeUnit.DAYS);
+        scheduler.scheduleAtFixedRate(updateData(),0,1, TimeUnit.HOURS);
     }
 }

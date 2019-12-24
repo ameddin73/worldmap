@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {BASE_URI, PROGRAMS_URI} from "../constants";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,6 @@ export class ProgramService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<any> {
-    return this.http.get(BASE_URI + PROGRAMS_URI);
+    return this.http.get(environment.BASE_URI + environment.PROGRAMS_URI);
   }
 }
