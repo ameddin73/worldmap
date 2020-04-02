@@ -20,8 +20,9 @@ import {ReactiveFormsModule} from "@angular/forms";
     AppRoutingModule,
     HttpClientModule,
     AgmCoreModule.forRoot({
-      apiKey: 'api key here'
-    })
+      apiKey: 'AIzaSyCvQcypBKIHYwRFCiCPlKC8FBH8-li9MxM'
+    }),
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

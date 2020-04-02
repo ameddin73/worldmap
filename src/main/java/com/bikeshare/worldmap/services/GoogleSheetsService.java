@@ -50,40 +50,6 @@ public class GoogleSheetsService {
     public GoogleSheetsService(ProgramRepository programRepository) {
         this.programRepository = programRepository;
     }
-    
-    public void getCities() {
-        List<List<Object>> values = new ArrayList<>();
-        int retry = 0;
-        while (retry < ERROR_TRIES) {
-            retry++;
-            try {
-                log.info("Reading from Google sheets...");
-                values = getSheetAsList();
-                break;
-            } catch (IOException e) {
-                log.error("IO error reading google sheets: " + e.getMessage());
-            } catch (GeneralSecurityException e) {
-                log.error("Security error reading google sheets: " + e.getMessage());
-            }
-        }
-
-        if (retry == ERROR_TRIES && CollectionUtils.isNotEmpty(values)) {
-            log.warn("Unable to update from google sheets.");
-        }
-
-        for (List<Object> objects : values) {
-            retry = 0;
-            while (retry < ERROR_TRIES) {
-                retry++;
-                try {
-                    saveProgram(objects);
-                    retry = ERROR_TRIES;
-                } catch (Exception e) {
-                    log.error("Error saving program: " + e.getClass().getCanonicalName() + " [" + e.getMessage() + "]");
-                }
-            }
-        }
-    }
 
     public void getCities() {
         List<List<Object>> values = new ArrayList<>();
