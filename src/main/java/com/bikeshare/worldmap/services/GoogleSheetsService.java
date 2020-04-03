@@ -15,12 +15,11 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
@@ -52,6 +51,40 @@ public class GoogleSheetsService {
         this.programRepository = programRepository;
     }
     
+    public void getCities() {
+        List<List<Object>> values = new ArrayList<>();
+        int retry = 0;
+        while (retry < ERROR_TRIES) {
+            retry++;
+            try {
+                log.info("Reading from Google sheets...");
+                values = getSheetAsList();
+                break;
+            } catch (IOException e) {
+                log.error("IO error reading google sheets: " + e.getMessage());
+            } catch (GeneralSecurityException e) {
+                log.error("Security error reading google sheets: " + e.getMessage());
+            }
+        }
+
+        if (retry == ERROR_TRIES && CollectionUtils.isNotEmpty(values)) {
+            log.warn("Unable to update from google sheets.");
+        }
+
+        for (List<Object> objects : values) {
+            retry = 0;
+            while (retry < ERROR_TRIES) {
+                retry++;
+                try {
+                    saveProgram(objects);
+                    retry = ERROR_TRIES;
+                } catch (Exception e) {
+                    log.error("Error saving program: " + e.getClass().getCanonicalName() + " [" + e.getMessage() + "]");
+                }
+            }
+        }
+    }
+
     public void getCities() {
         List<List<Object>> values = new ArrayList<>();
         int retry = 0;
