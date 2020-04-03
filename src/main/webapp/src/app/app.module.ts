@@ -5,22 +5,24 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from "@angular/common/http";
 import { AgmCoreModule } from "@agm/core";
-import { ProgramListComponent } from './program-list/program-list.component';
 import { GoogleMapComponent } from './google-map/google-map.component';
+import { MapUiComponent } from './map-ui/map-ui.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProgramListComponent,
-    GoogleMapComponent
+    GoogleMapComponent,
+    MapUiComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     AgmCoreModule.forRoot({
-      apiKey: 'api key here'
-    })
+      apiKey: 'AIzaSyCvQcypBKIHYwRFCiCPlKC8FBH8-li9MxM'
+    }),
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

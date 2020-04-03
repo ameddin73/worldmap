@@ -82,3 +82,8 @@ src/main/resources/google-sheets-client-secret.json
 src/main/resources/templates/
 src/main/resources/tokens/
 /src/main/resources/static/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

@@ -1,7 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {MouseEvent} from "@agm/core";
+import {Component, Input, OnInit} from '@angular/core';
 import {Program} from "../models/program.model";
-import {ProgramService} from "../shared/program/program.service";
+import {LocalDateObject} from '../map-ui/map-ui.component';
 
 @Component({
   selector: 'app-google-map',
@@ -9,7 +8,23 @@ import {ProgramService} from "../shared/program/program.service";
   styleUrls: ['./google-map.component.css']
 })
 export class GoogleMapComponent implements OnInit{
-  programs: Array<Program>;
+
+  @Input() localDateObject: LocalDateObject;
+
+  private _programs: Array<Program>;
+  @Input()
+  set programs(programs: Array<Program>) {
+    this._programs = programs;
+    this._programs.sort(((a, b) => {return (a.startDate<b.startDate?1:-1)}));
+    this.markers = this._programs.map((program) => {
+      return {
+        lat: program.latitude,
+        lng: program.longitude,
+        label: program.name,
+        city: program.city
+      };
+    });
+  }
 
   // google maps zoom level
   zoom: number = 8;
@@ -21,21 +36,9 @@ export class GoogleMapComponent implements OnInit{
   //markers
   markers: marker[];
 
-  constructor(private programService: ProgramService) {}
+  constructor() {}
 
   ngOnInit() {
-    this.programService.getAll().subscribe(data => {
-      this.programs = data._embedded.programs;
-      this.programs.sort(((a, b) => {return (a.startDate<b.startDate?1:-1)}));
-      this.markers = this.programs.map((program) => {
-        return {
-          lat: program.latitude,
-          lng: program.longitude,
-          label: program.name,
-          city: program.city
-        };
-      });
-    });
   }
 }
 
