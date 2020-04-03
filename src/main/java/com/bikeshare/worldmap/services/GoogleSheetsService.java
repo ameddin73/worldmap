@@ -67,7 +67,7 @@ public class GoogleSheetsService {
             }
         }
 
-        if (retry == ERROR_TRIES && CollectionUtils.isNotEmpty(values)) {
+        if (retry == ERROR_TRIES && CollectionUtils.isEmpty(values)) {
             log.warn("Unable to update from google sheets.");
         }
 
