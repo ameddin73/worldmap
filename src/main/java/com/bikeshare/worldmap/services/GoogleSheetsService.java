@@ -20,11 +20,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import javax.annotation.PostConstruct;
 import java.io.*;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -39,7 +42,7 @@ public class GoogleSheetsService {
     private static final String APPLICATION_NAME = "Bikeshare Worldmap";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS);
-    private static final String TOKENS_DIRECTORY_PATH = "/tokens";
+    private static final String TOKENS_DIRECTORY_PATH = "src/main/resources/token";
     private static final String CREDENTIALS_FILE_PATH = "/google-sheets-client-secret.json";
     private static final String RANGE = "All!A3:I10000";
     private static final int ERROR_TRIES = 5;
@@ -47,6 +50,40 @@ public class GoogleSheetsService {
     @Autowired
     public GoogleSheetsService(ProgramRepository programRepository) {
         this.programRepository = programRepository;
+    }
+    
+    public void getCities() {
+        List<List<Object>> values = new ArrayList<>();
+        int retry = 0;
+        while (retry < ERROR_TRIES) {
+            retry++;
+            try {
+                log.info("Reading from Google sheets...");
+                values = getSheetAsList();
+                break;
+            } catch (IOException e) {
+                log.error("IO error reading google sheets: " + e.getMessage());
+            } catch (GeneralSecurityException e) {
+                log.error("Security error reading google sheets: " + e.getMessage());
+            }
+        }
+
+        if (retry == ERROR_TRIES && CollectionUtils.isNotEmpty(values)) {
+            log.warn("Unable to update from google sheets.");
+        }
+
+        for (List<Object> objects : values) {
+            retry = 0;
+            while (retry < ERROR_TRIES) {
+                retry++;
+                try {
+                    saveProgram(objects);
+                    retry = ERROR_TRIES;
+                } catch (Exception e) {
+                    log.error("Error saving program: " + e.getClass().getCanonicalName() + " [" + e.getMessage() + "]");
+                }
+            }
+        }
     }
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException, GeneralSecurityException {
@@ -130,44 +167,10 @@ public class GoogleSheetsService {
                 name, startDate, status, url));
     }
 
-    private Runnable updateData() {
-        return new Runnable() {
-            List<List<Object>> values;
-            @Override
-            public void run() {
-                int retry = 0;
-                while (retry < ERROR_TRIES) {
-                    retry++;
-                    try {
-                        values = getSheetAsList();
-                        retry = ERROR_TRIES;
-                    } catch (IOException e) {
-                        log.error("IO error reading google sheets: " + e.getMessage());
-                    } catch (GeneralSecurityException e) {
-                        log.error("Security error reading google sheets: " + e.getMessage());
-                    }
-                }
-
-                for (List<Object> objects : values) {
-                    retry = 0;
-                    while (retry < ERROR_TRIES) {
-                        retry++;
-                        try {
-                            saveProgram(objects);
-                            retry = ERROR_TRIES;
-                        } catch (Exception e) {
-                            log.error("Error saving program: " + e.getClass().getCanonicalName() + " [" + e.getMessage() + "]");
-                        }
-                    }
-                }
-            }
-        };
-    }
-
     @PostConstruct
     private void runDataUpdate() {
         log.info("Initializing Google Sheets scheduled service.");
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(updateData(),0,1, TimeUnit.HOURS);
+        scheduler.scheduleAtFixedRate(this::getCities,0,1, TimeUnit.HOURS);
     }
 }
