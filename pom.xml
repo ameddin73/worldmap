@@ -123,13 +123,6 @@
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.2.0</version>
-                <configuration>
-                    <webResources>
-                        <resource>
-                            <directory>./src/main/webapp</directory>
-                        </resource>
-                    </webResources>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

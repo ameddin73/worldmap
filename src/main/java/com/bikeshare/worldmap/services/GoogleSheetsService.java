@@ -14,15 +14,18 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 @Component
 public class GoogleSheetsService {
@@ -32,14 +35,11 @@ public class GoogleSheetsService {
     private static final String SPREADSHEET_ID = "1Gi_IXzesLdBNSuaWdw5UyQWl2vcPUJjHb7fKFWlq6vc";
     private static final String APPLICATION_NAME = "Bikeshare Worldmap";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-    private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS);
-    private static final String TOKENS_DIRECTORY_PATH = "src/main/resources/token";
-    private static final String CREDENTIALS_FILE_PATH = "/google-sheets-client-secret.json";
-    private static final String SERVICE_CREDENTIALS_FILE_PATH = "src/main/resources/google-service-key.json";
+    private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY);
+    private static final String GOOGLE_SERVICE_KEY = "google-service-key.json";
     private static final String RANGE = "All!A3:I10000";
-    private static final int ERROR_TRIES = 5;
+    private static final int ERROR_TRIES = 3;
 
-    @Autowired
     public GoogleSheetsService(ProgramRepository programRepository) {
         this.programRepository = programRepository;
     }
@@ -55,7 +55,7 @@ public class GoogleSheetsService {
                 break;
             } catch (IOException e) {
                 log.error("IO error reading google sheets: " + e.getMessage());
-            } catch (GeneralSecurityException e) {
+            } catch (GeneralSecurityException | ClassNotFoundException e) {
                 log.error("Security error reading google sheets: " + e.getMessage());
             }
         }
@@ -78,13 +78,14 @@ public class GoogleSheetsService {
         }
     }
 
-    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException, GeneralSecurityException {
-        return GoogleCredential.fromStream(new FileInputStream(SERVICE_CREDENTIALS_FILE_PATH)).createScoped(Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY));
+    private static Credential getCredentials() throws IOException, ClassNotFoundException {
+        InputStream inputStream = (new ClassPathResource(GOOGLE_SERVICE_KEY)).getInputStream();
+        return GoogleCredential.fromStream(inputStream).createScoped(SCOPES);
     }
 
-    private static List<List<Object>> getSheetAsList() throws IOException, GeneralSecurityException {
+    private static List<List<Object>> getSheetAsList() throws IOException, GeneralSecurityException, ClassNotFoundException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+        Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials())
                 .setApplicationName(APPLICATION_NAME).build();
         ValueRange response = service.spreadsheets().values().get(SPREADSHEET_ID,RANGE).execute();
         return response.getValues();

@@ -16,6 +16,6 @@ public class UpdateController {
     @GetMapping("/update")
     public String update() {
         googleSheetsService.getCities();
-        return "Updating...";
+        return "Updated.";
     }
 }
