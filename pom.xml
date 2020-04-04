@@ -63,14 +63,14 @@
             <version>1.30.9</version>
         </dependency>
         <dependency>
-            <groupId>com.google.oauth-client</groupId>
-            <artifactId>google-oauth-client-jetty</artifactId>
-            <version>1.30.6</version>
+            <groupId>com.google.auth</groupId>
+            <artifactId>google-auth-library-oauth2-http</artifactId>
+            <version>0.20.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-sheets</artifactId>
-            <version>v4-rev614-1.18.0-rc</version>
+            <version>v4-rev1-1.21.0</version>
         </dependency>
 
         <dependency>
