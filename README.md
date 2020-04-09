@@ -1,3 +1,5 @@
+⛔️DEPRECATED view https://github.com/ameddin73/Public-Use-Bicycle-World-Map
+
 # worldmap
 Webapp for bikeshare world map.
 
